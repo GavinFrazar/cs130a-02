@@ -18,9 +18,17 @@ set(SOURCES
     src/BTree.cpp
     )
 
-include_directories(
-    ./src
+set(INCLUDES
+    ${INCLUDES}
+    src
     )
+    
+include_directories(
+    ${INCLUDES}
+    )
+
+source_group("Source files" FILES ${SOURCES})
+source_group("Header files" FILES ${HEADERS})
 
 add_executable(main ${SOURCES} ${HEADERS})
 
@@ -29,7 +37,14 @@ if (UNIX)
 endif(UNIX)
 
 # Unit tests
-#enable_testing()
-# add_executable(TestAVLinsert tests/TestAVLinsert.cpp src/AVL.cpp)
-# target_include_directories(TestAVLinsert PRIVATE ${INCLUDES})
-# add_test(AVLinsert TestAVLinsert)
+enable_testing()
+
+# Tests insert method
+ add_executable(TestAVLinsert tests/TestAVLinsert.cpp src/AVL.cpp)
+ target_include_directories(TestAVLinsert PRIVATE ${INCLUDES})
+ add_test(AVLinsert TestAVLinsert)
+
+# Tests search method
+add_executable(TestAVLsearch tests/TestAVLsearch.cpp src/AVL.cpp)
+target_include_directories(TestAVLsearch PRIVATE ${INCLUDES})
+add_test(AVLsearch TestAVLsearch)
