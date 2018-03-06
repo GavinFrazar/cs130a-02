@@ -49,6 +49,12 @@ add_executable(TestAVLsearch tests/TestAVLsearch.cpp src/AVL.cpp)
 target_include_directories(TestAVLsearch PRIVATE ${INCLUDES})
 add_test(AVLsearch TestAVLsearch)
 
+# Tests delete method
 add_executable(TestAVLdelete tests/TestAVLdelete.cpp src/AVL.cpp)
 target_include_directories(TestAVLdelete PRIVATE ${INCLUDES})
 add_test(AVLdelete TestAVLdelete)
+
+# Tests tree balancing
+add_executable(TestAVLbalance tests/TestAVLbalance.cpp src/AVL.cpp)
+target_include_directories(TestAVLbalance PRIVATE ${INCLUDES})
+add_test(AVLbalance TestAVLbalance)

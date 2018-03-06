@@ -54,6 +54,7 @@ namespace AVL
         void deleteWord(const std::string& word);
         std::vector<std::string> sort();
         void range(const std::string& word1, const std::string& word2);
+        int height();
     };
 }
 #endif

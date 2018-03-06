@@ -245,3 +245,8 @@ void AVL::AVLTree::range(const std::string & word1, const std::string & word2)
 {
     this->range(this->root, word1, word2);
 }
+
+int AVL::AVLTree::height()
+{
+    return this->root == nullptr ? -1 : this->root->height;
+}
