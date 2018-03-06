@@ -48,3 +48,7 @@ enable_testing()
 add_executable(TestAVLsearch tests/TestAVLsearch.cpp src/AVL.cpp)
 target_include_directories(TestAVLsearch PRIVATE ${INCLUDES})
 add_test(AVLsearch TestAVLsearch)
+
+add_executable(TestAVLdelete tests/TestAVLdelete.cpp src/AVL.cpp)
+target_include_directories(TestAVLdelete PRIVATE ${INCLUDES})
+add_test(AVLdelete TestAVLdelete)

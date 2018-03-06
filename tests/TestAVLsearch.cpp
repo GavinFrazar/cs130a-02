@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <assert.h>
+#include <iostream>
 
 using namespace AVL;
 int main()
@@ -20,7 +20,7 @@ int main()
 
         accumulator.clear();
         for (int k = 0; k < i; ++k)
-            if (k%2 == 0)
+            if (k % 2 == 0)
                 accumulator.push_back('a');
             else
                 accumulator.push_back('x');
@@ -31,10 +31,12 @@ int main()
 
     for (auto word : words)
     {
-        assert(avl_tree.search(word) == true);
+        if (avl_tree.search(word) != true)
+        {
+            std::cout << "Word: " << word << "\t not found" << std::endl;
+            return -1;
+        }
     }
-    avl_tree.insert("xa");
-    assert(avl_tree.search("xa") == false);
 
     return 0;
 }
