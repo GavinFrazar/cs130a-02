@@ -1,4 +1,4 @@
-#include "AVL.h"
+#include "AVLTree.h"
 
 #include <iostream>
 #include <vector>
@@ -7,7 +7,7 @@
 
 int main()
 {
-    AVL::AVLTree tree;
+    AVLTree tree;
     int power = 10;
     int num = std::pow(2, 10);
     for (int i = 0; i < num; ++i)

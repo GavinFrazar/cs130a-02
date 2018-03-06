@@ -1,4 +1,4 @@
-#include "AVL.h"
+#include "AVLTree.h"
 
 #include <vector>
 #include <string>
@@ -6,7 +6,6 @@
 
 int main()
 {
-    using AVL::AVLTree;
     AVLTree tree;
     
     std::vector<std::string> words;

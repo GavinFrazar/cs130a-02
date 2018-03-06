@@ -7,15 +7,17 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(HEADERS
     ${HEADERS}
-    src/AVL.h
+    src/AVLTree.h
     src/BTree.h
+    src/BNode.h
     )
 
 set(SOURCES
     ${SOURCES}
     src/main.cpp
-    src/AVL.cpp
+    src/AVLTree.cpp
     src/BTree.cpp
+    src/BNode.cpp
     )
 
 set(INCLUDES
@@ -40,21 +42,29 @@ endif(UNIX)
 enable_testing()
 
 # Tests insert method
- add_executable(TestAVLinsert tests/TestAVLinsert.cpp src/AVL.cpp)
+ add_executable(TestAVLinsert tests/TestAVLinsert.cpp src/AVLTree.cpp)
  target_include_directories(TestAVLinsert PRIVATE ${INCLUDES})
  add_test(AVLinsert TestAVLinsert)
 
 # Tests search method
-add_executable(TestAVLsearch tests/TestAVLsearch.cpp src/AVL.cpp)
+add_executable(TestAVLsearch tests/TestAVLsearch.cpp src/AVLTree.cpp)
 target_include_directories(TestAVLsearch PRIVATE ${INCLUDES})
 add_test(AVLsearch TestAVLsearch)
 
 # Tests delete method
-add_executable(TestAVLdelete tests/TestAVLdelete.cpp src/AVL.cpp)
+add_executable(TestAVLdelete tests/TestAVLdelete.cpp src/AVLTree.cpp)
 target_include_directories(TestAVLdelete PRIVATE ${INCLUDES})
 add_test(AVLdelete TestAVLdelete)
 
 # Tests tree balancing
-add_executable(TestAVLbalance tests/TestAVLbalance.cpp src/AVL.cpp)
+add_executable(TestAVLbalance tests/TestAVLbalance.cpp src/AVLTree.cpp)
 target_include_directories(TestAVLbalance PRIVATE ${INCLUDES})
 add_test(AVLbalance TestAVLbalance)
+
+# -----------
+# BTree tests
+
+# Tests insert method
+add_executable(TestBinsert tests/TestBinsert.cpp src/BTree.cpp)
+target_include_directories(TestBinsert PRIVATE ${INCLUDES})
+add_test(Binsert TestBinsert)

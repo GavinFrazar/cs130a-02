@@ -1,6 +1,6 @@
 #include "AVLTree.h"
 
-AVL::Node*& AVL::Tree::search(Node*& root, const std::string & word)
+Node*& AVLTree::search(Node*& root, const std::string & word)
 {
     if (root == nullptr)
         return root;
@@ -13,7 +13,7 @@ AVL::Node*& AVL::Tree::search(Node*& root, const std::string & word)
         return root;
 }
 
-void AVL::Tree::insert(Node *& root, const std::string & word)
+void AVLTree::insert(Node *& root, const std::string & word)
 {
     if (root == nullptr)
         root = new Node(word);
@@ -28,7 +28,7 @@ void AVL::Tree::insert(Node *& root, const std::string & word)
     this->balanceTree(root);
 }
 
-void AVL::Tree::sort(Node * root, std::vector<std::string>& v)
+void AVLTree::sort(Node * root, std::vector<std::string>& v)
 {
     if (root == nullptr)
         return;
@@ -38,7 +38,7 @@ void AVL::Tree::sort(Node * root, std::vector<std::string>& v)
     sort(root->right, v);
 }
 
-void AVL::Tree::range(Node * root, const std::string & word1, const std::string & word2)
+void AVLTree::range(Node * root, const std::string & word1, const std::string & word2)
 {
     if (root == nullptr)
         return;
@@ -49,7 +49,7 @@ void AVL::Tree::range(Node * root, const std::string & word1, const std::string 
     range(root->right, word1, word2);
 }
 
-void AVL::Tree::deleteWord(Node *& root, const std::string & word)
+void AVLTree::deleteWord(Node *& root, const std::string & word)
 {
     if (root == nullptr)
         return;
@@ -102,7 +102,7 @@ void AVL::Tree::deleteWord(Node *& root, const std::string & word)
     balanceTree(root);
 }
 
-int AVL::Tree::height(Node * root)
+int AVLTree::height(Node * root)
 {
     if (root == nullptr)
         return -1;
@@ -110,7 +110,7 @@ int AVL::Tree::height(Node * root)
         return root->height;
 }
 
-void AVL::Tree::updateHeight(Node * root)
+void AVLTree::updateHeight(Node * root)
 {
     if (root == nullptr)
         return;
@@ -118,12 +118,12 @@ void AVL::Tree::updateHeight(Node * root)
     root->height = 1 + max(height(root->left), height(root->right));
 }
 
-int AVL::Tree::max(int a, int b)
+int AVLTree::max(int a, int b)
 {
     return (a > b ? a : b);
 }
 
-void AVL::Tree::balanceTree(Node*& root)
+void AVLTree::balanceTree(Node*& root)
 {
     int difference = checkBalance(root);
     if (difference > 1) //left tree heavy
@@ -151,14 +151,9 @@ void AVL::Tree::balanceTree(Node*& root)
             rotateLeft(root);
         }
     }
-    else
-    {
-        //balanced already, do nothing
-    }
-
 }
 
-void AVL::Tree::rotateLeft(Node*& root)
+void AVLTree::rotateLeft(Node*& root)
 {
     if (root == nullptr || root->right == nullptr)
         return;
@@ -172,7 +167,7 @@ void AVL::Tree::rotateLeft(Node*& root)
     root = new_root;
 }
 
-void AVL::Tree::rotateRight(Node*& root)
+void AVLTree::rotateRight(Node*& root)
 {
     if (root == nullptr || root->left == nullptr)
         return;
@@ -186,7 +181,7 @@ void AVL::Tree::rotateRight(Node*& root)
     root = new_root;
 }
 
-void AVL::Tree::deleteNode(Node *& root)
+void AVLTree::deleteNode(Node *& root)
 {
     if (root == nullptr)
         return;
@@ -195,7 +190,7 @@ void AVL::Tree::deleteNode(Node *& root)
     root = nullptr;
 }
 
-int AVL::Tree::checkBalance(Node *& root)
+int AVLTree::checkBalance(Node *& root)
 {
     if (root == nullptr)
         return 0;
@@ -204,12 +199,12 @@ int AVL::Tree::checkBalance(Node *& root)
 }
 
 
-AVL::Tree::Tree()
+AVLTree::AVLTree()
 {
     this->root = nullptr;
 }
 
-AVL::Tree::~Tree()
+AVLTree::~AVLTree()
 {
     Node* target = this->root;
     while (target != nullptr)
@@ -220,34 +215,34 @@ AVL::Tree::~Tree()
     }
 }
 
-bool AVL::Tree::search(const std::string & word)
+bool AVLTree::search(const std::string & word)
 {
     return (this->search(this->root, word) != nullptr);
 }
 
-void AVL::Tree::insert(const std::string & word)
+void AVLTree::insert(const std::string & word)
 {
     this->insert(root, word);
 }
 
-void AVL::Tree::deleteWord(const std::string & word)
+void AVLTree::deleteWord(const std::string & word)
 {
     this->deleteWord(this->root, word);
 }
 
-std::vector<std::string> AVL::Tree::sort()
+std::vector<std::string> AVLTree::sort()
 {
     std::vector<std::string> v;
     sort(this->root, v);
     return v;
 }
 
-void AVL::Tree::range(const std::string & word1, const std::string & word2)
+void AVLTree::range(const std::string & word1, const std::string & word2)
 {
     this->range(this->root, word1, word2);
 }
 
-int AVL::Tree::height()
+int AVLTree::height()
 {
     return this->root == nullptr ? -1 : this->root->height;
 }

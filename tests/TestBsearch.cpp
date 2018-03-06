@@ -1,12 +1,12 @@
-#include "AVLTree.h"
+#include "BTree.h"
 
-#include <string>
 #include <vector>
+#include <string>
 #include <iostream>
 
 int main()
 {
-    AVLTree avl_tree;
+    B::Tree b_tree;
     std::vector<std::string> words;
     for (int i = 0; i < 1000; ++i)
     {
@@ -14,7 +14,7 @@ int main()
         for (int j = 0; j < i; ++j)
             accumulator.push_back('x');
         std::string word1(accumulator.begin(), accumulator.end());
-        avl_tree.insert(word1);
+        b_tree.insert(word1);
         words.push_back(word1);
 
         accumulator.clear();
@@ -24,13 +24,13 @@ int main()
             else
                 accumulator.push_back('x');
         std::string word2(accumulator.begin(), accumulator.end());
-        avl_tree.insert(word2);
+        b_tree.insert(word2);
         words.push_back(word2);
     }
 
     for (auto word : words)
     {
-        if (avl_tree.search(word) != true)
+        if (b_tree.search(word) != true)
         {
             std::cout << "Word: " << word << "\t not found" << std::endl;
             return -1;

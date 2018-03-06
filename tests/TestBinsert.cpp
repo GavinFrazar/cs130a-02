@@ -1,12 +1,12 @@
-#include "AVLTree.h"
+#include "BTree.h"
 
-#include <cassert>
 #include <vector>
 #include <string>
+#include <iostream>
 
 int main()
 {
-    AVLTree tree;
+    BTree tree;
     std::vector<std::string> words;
     for (int i = 1; i < 500; ++i)
     {
@@ -23,5 +23,7 @@ int main()
         std::cout << "tree insert failed. Expected tree size: " << words.size() << ", got: " << v.size() << std::endl;
         return -1;
     }
+
+
     return 0;
 }
