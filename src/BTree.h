@@ -6,7 +6,17 @@
 #include <iostream>
 #include <cassert>
 
-#include "BNode.h"
+struct BNode
+{
+public:
+    int number_of_words_;
+    bool is_leaf_;
+    std::string* words_;
+    BNode** children_;
+    BNode(int degree, bool is_leaf)
+    {
+    }
+};
 
 class BTree
 {

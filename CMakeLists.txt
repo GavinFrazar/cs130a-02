@@ -9,7 +9,6 @@ set(HEADERS
     ${HEADERS}
     src/AVLTree.h
     src/BTree.h
-    src/BNode.h
     )
 
 set(SOURCES
@@ -17,7 +16,6 @@ set(SOURCES
     src/main.cpp
     src/AVLTree.cpp
     src/BTree.cpp
-    src/BNode.cpp
     )
 
 set(INCLUDES
