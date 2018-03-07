@@ -2,9 +2,18 @@
 
 BNode *& BTree::search(BNode *& root, const std::string & word)
 {
-    BNode* node;
-
-    return node;
+    if (root == nullptr)
+        return root;
+    int i = 0;
+    for (; i < root->size_ - 1; ++i)
+    {
+        if (root->data_[i + 1]->word_ > word)
+            break;
+    }
+    if (root->data_[i]->word_ == word)
+        return root;
+    else
+        search(root->children_[i + 1], word);
 }
 
 void BTree::insert(BNode * root, const std::string & word)
@@ -40,7 +49,6 @@ void BTree::insert(BNode * root, const std::string & word)
 
 void BTree::insertHere(BNode * root, const std::string& word, BNode* left_child)
 {
-    //TODO -- copy the count from Data swaps
     int i = root->size_;
     while (i >= 0)
     {
@@ -132,14 +140,24 @@ void BTree::sort(BNode * root, std::vector<std::string>& v)
     sort(root->children_[root->size_], v); //get the last child's data
 }
 
-void BTree::range(BNode * root, const std::string & word1, const std::string & word2)
+void BTree::range(BNode * root, const std::string & word1, const std::string & word2, std::vector<std::string>& v)
 {
+    if (root == nullptr)
+        return;
+    for (int i = 0; i < root->size_; ++i)
+    {
+        if (root->data_[i]->word_ > word1)
+            range(root->children_[i], word1, word2, v);
+        if (root->data_[i]->word_ >= word1 && root->data_[i]->word_ <= word2)
+            v.push_back(root->data_[i]->word_);
+    }
+    if (root->data_[root->size_ - 1]->word_ < word2)
+        range(root->children_[root->size_], word1, word2, v); //get the last child's data
 }
 
 void BTree::deleteWord(BNode *& root, const std::string & word)
 {
 }
-
 
 BTree::BTree()
 {
@@ -153,7 +171,7 @@ BTree::~BTree()
 
 bool BTree::search(const std::string & word)
 {
-    return false;
+    return this->search(this->root_, word) != nullptr;
 }
 
 void BTree::insert(const std::string & word)
@@ -172,11 +190,9 @@ std::vector<std::string> BTree::sort()
     return sorted_v;
 }
 
-void BTree::range(const std::string & word1, const std::string & word2)
+std::vector<std::string> BTree::range(const std::string & word1, const std::string & word2)
 {
-}
-
-int BTree::height()
-{
-    return 0;
+    std::vector<std::string> sorted_v;
+    this->range(this->root_, word1, word2, sorted_v);
+    return sorted_v;
 }
