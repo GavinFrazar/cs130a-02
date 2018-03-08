@@ -38,15 +38,15 @@ void AVLTree::sort(Node * root, std::vector<std::string>& v)
     sort(root->right, v);
 }
 
-void AVLTree::range(Node * root, const std::string & word1, const std::string & word2)
+void AVLTree::range(Node * root, const std::string & word1, const std::string & word2, std::vector<std::string>& v)
 {
     if (root == nullptr)
         return;
 
-    range(root->left, word1, word2);
+    range(root->left, word1, word2, v);
     if (root->word >= word1 && root->word <= word2)
-        std::cout << root->word << '\n';
-    range(root->right, word1, word2);
+        v.push_back(root->word);
+    range(root->right, word1, word2, v);
 }
 
 void AVLTree::deleteWord(Node *& root, const std::string & word)
@@ -237,9 +237,11 @@ std::vector<std::string> AVLTree::sort()
     return v;
 }
 
-void AVLTree::range(const std::string & word1, const std::string & word2)
+std::vector<std::string> AVLTree::range(const std::string & word1, const std::string & word2)
 {
-    this->range(this->root, word1, word2);
+    std::vector<std::string> v;
+    this->range(this->root, word1, word2, v);
+    return v;
 }
 
 int AVLTree::height()

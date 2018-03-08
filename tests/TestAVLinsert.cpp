@@ -8,7 +8,7 @@ int main()
 {
     AVLTree tree;
     std::vector<std::string> words;
-    for (int i = 1; i < 500; ++i)
+    for (int i = 1; i < 1000; ++i)
     {
         std::vector<char> accumulator;
         for (int j = 0; j < i; ++j)

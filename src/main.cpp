@@ -12,7 +12,7 @@
 #include "AVLTree.h"
 #include "BTree.h"
 
-namespace fs = std::experimental::filesystem; //potentially needs to be changed on UNIX systems to std::filesystem
+namespace fs = std::experimental::filesystem;
 
 void to_lower(std::string &s);
 
@@ -36,6 +36,7 @@ int main()
     {
         if (fs::is_regular_file(p))
         {
+            std::cout << p.path() << std::endl;
             std::ifstream input_file;
             input_file.open(p.path());
 
@@ -46,7 +47,7 @@ int main()
                 for (std::sregex_iterator it(token.begin(), token.end(), rgx), it_end; it != it_end; ++it)
                 {
                     std::string word = it->str();
-                    if (stopword_table.find(word) != stopword_table.end())
+                    if (stopword_table.find(word) == stopword_table.end())
                         words.push_back(word);
                 }
             }
@@ -237,18 +238,20 @@ int main()
 
             //time bst range
             auto start_bst = std::chrono::high_resolution_clock::now();
-            avl_tree.range(word1, word2);
+            auto output = avl_tree.range(word1, word2);
             auto end_bst = std::chrono::high_resolution_clock::now();
             auto dur_bst = end_bst - start_bst;
             auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
 
             //time hashtable range
             auto start_ht = std::chrono::high_resolution_clock::now();
-            //ht.range(word1, word2);
+            //auto output = ht.range(word1, word2);
             auto end_ht = std::chrono::high_resolution_clock::now();
             auto dur_ht = end_ht - start_ht;
             auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
 
+            for (auto word : output)
+                std::cout << word << '\n';
             std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
             std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
         }

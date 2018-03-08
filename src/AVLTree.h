@@ -29,7 +29,7 @@ protected:
     Node*& search(Node*& root, const std::string& word);
     void insert(Node*& root, const std::string& word);
     void sort(Node* root, std::vector<std::string>& v);
-    void range(Node* root, const std::string& word1, const std::string& word2);
+    void range(Node* root, const std::string& word1, const std::string& word2, std::vector<std::string>& v);
     void deleteWord(Node*& root, const std::string& word);
     int height(Node* root);
     void updateHeight(Node* root);
@@ -51,7 +51,7 @@ public:
     void insert(const std::string& word);
     void deleteWord(const std::string& word);
     std::vector<std::string> sort();
-    void range(const std::string& word1, const std::string& word2);
+    std::vector<std::string> range(const std::string& word1, const std::string& word2);
     int height();
 };
 #endif

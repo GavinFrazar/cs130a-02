@@ -55,14 +55,14 @@ target_include_directories(TestAVLdelete PRIVATE ${INCLUDES})
 add_test(AVLdelete TestAVLdelete)
 
 # # Tests sort method
-# add_executable(TestAVLsort tests/TestAVLsort.cpp src/AVLTree.cpp)
-# target_include_directories(TestAVLsort PRIVATE ${INCLUDES})
-# add_test(AVLsort TestAVLsort)
+add_executable(TestAVLsort tests/TestAVLsort.cpp src/AVLTree.cpp)
+target_include_directories(TestAVLsort PRIVATE ${INCLUDES})
+add_test(AVLsort TestAVLsort)
 
 # # Tests range method
-# add_executable(TestAVLrange tests/TestAVLrange.cpp src/BTree.cpp)
-# target_include_directories(TestAVLrange PRIVATE ${INCLUDES})
-# add_test(AVLrange TestAVLrange)
+add_executable(TestAVLrange tests/TestAVLrange.cpp src/AVLTree.cpp)
+target_include_directories(TestAVLrange PRIVATE ${INCLUDES})
+add_test(AVLrange TestAVLrange)
 
 # Tests tree balancing
 add_executable(TestAVLbalance tests/TestAVLbalance.cpp src/AVLTree.cpp)
@@ -88,14 +88,14 @@ add_test(Binsert TestBinsert)
 # add_test(Bdelete TestBdelete)
 
 # # Tests sort method
-# add_executable(TestBsort tests/TestBsort.cpp src/BTree.cpp)
-# target_include_directories(TestBsort PRIVATE ${INCLUDES})
-# add_test(Bsort TestBsort)
+add_executable(TestBsort tests/TestBsort.cpp src/BTree.cpp)
+target_include_directories(TestBsort PRIVATE ${INCLUDES})
+add_test(Bsort TestBsort)
 
 # # Tests range method
-# add_executable(TestBrange tests/TestBrange.cpp src/BTree.cpp)
-# target_include_directories(TestBrange PRIVATE ${INCLUDES})
-# add_test(Brange TestBrange)
+add_executable(TestBrange tests/TestBrange.cpp src/BTree.cpp)
+target_include_directories(TestBrange PRIVATE ${INCLUDES})
+add_test(Brange TestBrange)
 
 # Test that the BTree satisfies all of its properties
 add_executable(TestBproperties tests/TestBproperties src/BTree.cpp)
