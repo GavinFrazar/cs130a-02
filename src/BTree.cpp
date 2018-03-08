@@ -157,7 +157,27 @@ void BTree::range(BNode * root, const std::string & word1, const std::string & w
 
 void BTree::deleteWord(BNode *& root, const std::string & word)
 {
+    BNode* node = this->search(root, word);
+    if (node == nullptr) //not found -- nothing to delete
+        return;
 
+    if (node->is_leaf_)
+    {
+        Data* data;
+        //find which data slot it's in
+        //check its count
+        if (data->count_ > 1)
+        {
+            --data->count_;
+            return;
+        }
+        else
+        {
+            //delete it
+            //move the other data over (there's no children to move)
+            //check for underflow
+        }
+    }
 }
 
 BTree::BTree()
@@ -182,6 +202,7 @@ void BTree::insert(const std::string & word)
 
 void BTree::deleteWord(const std::string & word)
 {
+    this->deleteWord(this->root_, word);
 }
 
 std::vector<std::string> BTree::sort()
