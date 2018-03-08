@@ -96,3 +96,8 @@ add_test(Binsert TestBinsert)
 # add_executable(TestBrange tests/TestBrange.cpp src/BTree.cpp)
 # target_include_directories(TestBrange PRIVATE ${INCLUDES})
 # add_test(Brange TestBrange)
+
+# Test that the BTree satisfies all of its properties
+add_executable(TestBproperties tests/TestBproperties src/BTree.cpp)
+target_include_directories(TestBproperties PRIVATE ${INCLUDES})
+add_test(Bproperties TestBproperties)

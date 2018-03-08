@@ -157,6 +157,7 @@ void BTree::range(BNode * root, const std::string & word1, const std::string & w
 
 void BTree::deleteWord(BNode *& root, const std::string & word)
 {
+
 }
 
 BTree::BTree()
