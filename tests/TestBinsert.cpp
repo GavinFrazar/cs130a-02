@@ -45,7 +45,7 @@ int main()
     }
 
     std::vector<std::string> words2;
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < 1000; ++i)
     {
         std::vector<char> accumulator;
         for (int j = 0; j <= i; ++j)

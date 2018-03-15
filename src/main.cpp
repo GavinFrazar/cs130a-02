@@ -186,7 +186,7 @@ int main()
 
             //time bst delete
             auto start_bst = std::chrono::high_resolution_clock::now();
-            avl_tree.deleteWord(word);
+            avl_tree.erase(word);
             auto end_bst = std::chrono::high_resolution_clock::now();
             auto dur_bst = end_bst - start_bst;
             auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();

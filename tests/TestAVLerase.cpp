@@ -25,7 +25,7 @@ int main()
         std::cout << "Before:\t";
         for (auto w : vec)
             std::cout << w << ' ';
-        tree.deleteWord(word);
+        tree.erase(word);
         vec = tree.sort();
         std::cout << "\n\nAfter:\t";
         for (auto w : vec)

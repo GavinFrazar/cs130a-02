@@ -48,10 +48,10 @@ protected:
     //helpers
     BNode*& search(BNode*& root, const std::string& word);
     void insert(BNode* root, const std::string& word);
-    void insertHere(BNode* root, const std::string& word, BNode* child);
+    void insertHere(BNode* root, const std::string& word);
     void sort(BNode* root, std::vector<std::string>& v);
     void range(BNode* root, const std::string& word1, const std::string& word2, std::vector<std::string>& v);
-    void deleteWord(BNode*& root, const std::string& word);
+    void erase(BNode*& root, const std::string& word);
     void split(BNode* unsplit_node);
 public:
     //ctor
@@ -62,7 +62,7 @@ public:
 
     bool search(const std::string& word);
     void insert(const std::string& word);
-    void deleteWord(const std::string& word);
+    void erase(const std::string& word);
     std::vector<std::string> sort();
     std::vector<std::string> range(const std::string& word1, const std::string& word2);
 };

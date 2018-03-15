@@ -49,14 +49,14 @@ void AVLTree::range(Node * root, const std::string & word1, const std::string & 
     range(root->right, word1, word2, v);
 }
 
-void AVLTree::deleteWord(Node *& root, const std::string & word)
+void AVLTree::erase(Node *& root, const std::string & word)
 {
     if (root == nullptr)
         return;
     if (word < root->word)
-        deleteWord(root->left, word);
+        erase(root->left, word);
     else if (word > root->word)
-        deleteWord(root->right, word);
+        erase(root->right, word);
     else
     {
         if (root->count > 1)
@@ -77,7 +77,7 @@ void AVLTree::deleteWord(Node *& root, const std::string & word)
                 root->word = min_from_right->word;
                 root->count = min_from_right->count;
                 min_from_right->count = 0;
-                deleteWord(root->right, root->word);
+                erase(root->right, root->word);
             }
             else if (root->left != nullptr) //only a left child
             {
@@ -225,9 +225,9 @@ void AVLTree::insert(const std::string & word)
     this->insert(root, word);
 }
 
-void AVLTree::deleteWord(const std::string & word)
+void AVLTree::erase(const std::string & word)
 {
-    this->deleteWord(this->root, word);
+    this->erase(this->root, word);
 }
 
 std::vector<std::string> AVLTree::sort()
