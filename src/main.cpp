@@ -55,73 +55,73 @@ int main()
     }
 
     AVLTree avl_tree;
+    BTree b_tree;
     for (auto& word : words)
+    {
         avl_tree.insert(word);
-
-    //HashTable ht((unsigned long long)(bst.getSize() * 1.5));
-    //for (auto& word : words)
-    //    ht.insert(word);
+        b_tree.insert(word);
+    }
 
     std::cout << std::boolalpha;
     std::cout.precision(17);
 
     //uncomment for testing of 100 insert/search/delete operations
-    /*
-    //insert into bst
+
+    //insert into AVL
     auto start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    bst.insert(stopwords[i]);
+    avl_tree.insert(stopwords[i]);
     auto end_test = std::chrono::high_resolution_clock::now();
     auto dur_test = end_test - start_test;
     auto ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "BST 100 inserts:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "AVL 100 inserts:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    //insert into hashtable
+    //insert into BTree
     start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    ht.insert(stopwords[i]);
+    b_tree.insert(stopwords[i]);
     end_test = std::chrono::high_resolution_clock::now();
     dur_test = end_test - start_test;
     ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "HashTable 100 inserts:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "BTree 100 inserts:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    //search bst
+    //search avl_tree
     start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    bst.search(stopwords[i]);
+    avl_tree.search(stopwords[i]);
     end_test = std::chrono::high_resolution_clock::now();
     dur_test = end_test - start_test;
     ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "BST 100 searches:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "AVL 100 searches:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    //search hashtable
+    //search BTree
     start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    ht.search(stopwords[i]);
+    b_tree.search(stopwords[i]);
     end_test = std::chrono::high_resolution_clock::now();
     dur_test = end_test - start_test;
     ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "HashTable 100 searches:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "BTree 100 searches:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    //delete from bst
+    //delete from avl_tree
     start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    bst.delete_word(stopwords[i]);
+    avl_tree.erase(stopwords[i]);
     end_test = std::chrono::high_resolution_clock::now();
     dur_test = end_test - start_test;
     ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "BST 100 deletes:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "AVL 100 deletes:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    //delete from hashtable
+    //delete from BTree
     start_test = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 100; ++i)
-    ht.delete_word(stopwords[i]);
+    b_tree.erase(stopwords[i]);
     end_test = std::chrono::high_resolution_clock::now();
     dur_test = end_test - start_test;
     ns_test = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_test).count();
-    std::cout << "HashTable 100 deletes:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
+    std::cout << "BTree 100 deletes:\t" << std::fixed << ns_test / NANOS_PER_SECOND << std::endl;
 
-    */
+    
 
     //loop forever
     while (true)
@@ -140,66 +140,66 @@ int main()
             std::string word;
             std::cin >> word;
 
-            //time bst search
-            auto start_bst = std::chrono::high_resolution_clock::now();
+            //time avl_tree search
+            auto start_avl_tree = std::chrono::high_resolution_clock::now();
             std::cout << avl_tree.search(word) << std::endl;
-            auto end_bst = std::chrono::high_resolution_clock::now();
-            auto dur_bst = end_bst - start_bst;
-            auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
+            auto end_avl_tree = std::chrono::high_resolution_clock::now();
+            auto dur_avl_tree = end_avl_tree - start_avl_tree;
+            auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
 
-            //time hashtable search
-            auto start_ht = std::chrono::high_resolution_clock::now();
-            //std::cout << ht.search(word) << std::endl;
-            auto end_ht = std::chrono::high_resolution_clock::now();
-            auto dur_ht = end_ht - start_ht;
-            auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
+            //time BTree search
+            auto start_b_tree = std::chrono::high_resolution_clock::now();
+            std::cout << b_tree.search(word) << std::endl;
+            auto end_b_tree = std::chrono::high_resolution_clock::now();
+            auto dur_b_tree = end_b_tree - start_b_tree;
+            auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
 
-            std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
-            std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
+            std::cout << "AVL: " << std::fixed << ns_avl_tree / NANOS_PER_SECOND << std::endl;
+            std::cout << "BTree: " << std::fixed << ns_b_tree / NANOS_PER_SECOND << std::endl;
         }
         else if (option_select == 2) //insert option selected
         {
             std::string word;
             std::cin >> word;
 
-            //time bst insert
-            auto start_bst = std::chrono::high_resolution_clock::now();
+            //time avl_tree insert
+            auto start_avl_tree = std::chrono::high_resolution_clock::now();
             avl_tree.insert(word);
-            auto end_bst = std::chrono::high_resolution_clock::now();
-            auto dur_bst = end_bst - start_bst;
-            auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
+            auto end_avl_tree = std::chrono::high_resolution_clock::now();
+            auto dur_avl_tree = end_avl_tree - start_avl_tree;
+            auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
 
-            //time hashtable insert
-            auto start_ht = std::chrono::high_resolution_clock::now();
-            //ht.insert(word);
-            auto end_ht = std::chrono::high_resolution_clock::now();
-            auto dur_ht = end_ht - start_ht;
-            auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
+            //time BTree insert
+            auto start_b_tree = std::chrono::high_resolution_clock::now();
+            b_tree.insert(word);
+            auto end_b_tree = std::chrono::high_resolution_clock::now();
+            auto dur_b_tree = end_b_tree - start_b_tree;
+            auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
 
-            std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
-            std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
+            std::cout << "AVL: " << std::fixed << ns_avl_tree / NANOS_PER_SECOND << std::endl;
+            std::cout << "BTree: " << std::fixed << ns_b_tree / NANOS_PER_SECOND << std::endl;
         }
         else if (option_select == 3) //delete option selected
         {
             std::string word;
             std::cin >> word;
 
-            //time bst delete
-            auto start_bst = std::chrono::high_resolution_clock::now();
+            //time avl_tree delete
+            auto start_avl_tree = std::chrono::high_resolution_clock::now();
             avl_tree.erase(word);
-            auto end_bst = std::chrono::high_resolution_clock::now();
-            auto dur_bst = end_bst - start_bst;
-            auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
+            auto end_avl_tree = std::chrono::high_resolution_clock::now();
+            auto dur_avl_tree = end_avl_tree - start_avl_tree;
+            auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
 
-            //time hashtable delete
-            auto start_ht = std::chrono::high_resolution_clock::now();
-            //ht.delete_word(word);
-            auto end_ht = std::chrono::high_resolution_clock::now();
-            auto dur_ht = end_ht - start_ht;
-            auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
+            //time BTree delete
+            auto start_b_tree = std::chrono::high_resolution_clock::now();
+            b_tree.erase(word);
+            auto end_b_tree = std::chrono::high_resolution_clock::now();
+            auto dur_b_tree = end_b_tree - start_b_tree;
+            auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
 
-            std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
-            std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
+            std::cout << "AVL: " << std::fixed << ns_avl_tree / NANOS_PER_SECOND << std::endl;
+            std::cout << "BTree: " << std::fixed << ns_b_tree / NANOS_PER_SECOND << std::endl;
         }
         else if (option_select == 4) //sort option selected
         {
@@ -207,28 +207,28 @@ int main()
             const std::string sort_output_file = "sort_output.txt";
             std::ofstream out(sort_output_file);
 
-            //time bst sort
-            auto start_bst = std::chrono::high_resolution_clock::now();
-            const std::vector<std::string> &bst_sorted = avl_tree.sort();
-            auto end_bst = std::chrono::high_resolution_clock::now();
-            auto dur_bst = end_bst - start_bst;
-            auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
-            for (auto &word : bst_sorted)
-                out << word << "\n";
+            //time avl_tree sort
+            auto start_avl_tree = std::chrono::high_resolution_clock::now();
+            const std::vector<std::string> &avl_tree_sorted = avl_tree.sort();
+            auto end_avl_tree = std::chrono::high_resolution_clock::now();
+            auto dur_avl_tree = end_avl_tree - start_avl_tree;
+            auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
+            for (auto &word : avl_tree_sorted)
+                out << word << '\n';
 
-            //time hashtable sort
-            auto start_ht = std::chrono::high_resolution_clock::now();
-            //const std::vector<std::string> &ht_sorted = ht.sort();
-            auto end_ht = std::chrono::high_resolution_clock::now();
-            auto dur_ht = end_ht - start_ht;
-            auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
-            //for (auto &word : ht_sorted)
-            //    out << '\n' << word;
+            //time BTree sort
+            auto start_b_tree = std::chrono::high_resolution_clock::now();
+            const std::vector<std::string> &b_tree_sorted = b_tree.sort();
+            auto end_b_tree = std::chrono::high_resolution_clock::now();
+            auto dur_b_tree = end_b_tree - start_b_tree;
+            auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
+            for (auto &word : b_tree_sorted)
+                out << '\n' << word;
 
             out.close();
             std::cout << base_path << sort_output_file << std::endl;
-            std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
-            std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
+            std::cout << "AVL: " << std::fixed << ns_avl_tree / NANOS_PER_SECOND << std::endl;
+            std::cout << "BTree: " << std::fixed << ns_b_tree / NANOS_PER_SECOND << std::endl;
         }
         else if (option_select == 5)
         {
@@ -236,24 +236,26 @@ int main()
             std::cin >> word1;
             std::cin >> word2;
 
-            //time bst range
-            auto start_bst = std::chrono::high_resolution_clock::now();
-            auto output = avl_tree.range(word1, word2);
-            auto end_bst = std::chrono::high_resolution_clock::now();
-            auto dur_bst = end_bst - start_bst;
-            auto ns_bst = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_bst).count();
+            //time avl_tree range
+            auto start_avl_tree = std::chrono::high_resolution_clock::now();
+            auto avl_output = avl_tree.range(word1, word2);
+            auto end_avl_tree = std::chrono::high_resolution_clock::now();
+            auto dur_avl_tree = end_avl_tree - start_avl_tree;
+            auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
+            
+            //time BTree range
+            auto start_b_tree = std::chrono::high_resolution_clock::now();
+            auto btree_output = b_tree.range(word1, word2);
+            auto end_b_tree = std::chrono::high_resolution_clock::now();
+            auto dur_b_tree = end_b_tree - start_b_tree;
+            auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
 
-            //time hashtable range
-            auto start_ht = std::chrono::high_resolution_clock::now();
-            //auto output = ht.range(word1, word2);
-            auto end_ht = std::chrono::high_resolution_clock::now();
-            auto dur_ht = end_ht - start_ht;
-            auto ns_ht = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_ht).count();
-
-            for (auto word : output)
+            for (auto word : avl_output)
                 std::cout << word << '\n';
-            std::cout << "BST: " << std::fixed << ns_bst / NANOS_PER_SECOND << std::endl;
-            std::cout << "Hash: " << std::fixed << ns_ht / NANOS_PER_SECOND << std::endl;
+
+            assert(avl_output.size() == btree_output.size());
+            std::cout << "AVL: " << std::fixed << ns_avl_tree / NANOS_PER_SECOND << std::endl;
+            std::cout << "BTree: " << std::fixed << ns_b_tree / NANOS_PER_SECOND << std::endl;
         }
         else
         {

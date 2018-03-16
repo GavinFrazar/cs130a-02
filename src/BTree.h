@@ -35,6 +35,15 @@ public:
         is_leaf_ = is_leaf;
         size_ = 0;
     }
+
+    ~BNode()
+    {
+        for (int i = 0; i < size_; ++i)
+            delete data_[i];
+
+        delete[] data_;
+        delete[] children_;
+    }
 };
 
 class BTree
@@ -63,17 +72,30 @@ protected:
     void shiftContentsRight(BNode* root, int start);
     BNode* findMaxLeaf(BNode* root);
     BNode* findMinLeaf(BNode* root);
+    void freeMem(BNode*& root);
+    void deepCopy(BNode*& first, BNode* const & second, BNode* parent);
 public:
     //ctor
     BTree();
 
+    //copy ctor
+    BTree(const BTree& other);
+
+    //move ctor
+    BTree(BTree&& other);
+
     //dtor
     ~BTree();
+
+    //assignment
+    BTree& operator=(BTree rhs);
 
     bool search(const std::string& word);
     void insert(const std::string& word);
     void erase(const std::string& word);
     std::vector<std::string> sort();
     std::vector<std::string> range(const std::string& word1, const std::string& word2);
+
+    friend void swap(BTree& first, BTree& second);
 };
 #endif
