@@ -43,10 +43,16 @@ void AVLTree::range(Node * root, const std::string & word1, const std::string & 
     if (root == nullptr)
         return;
 
-    range(root->left, word1, word2, v);
-    if (root->word >= word1 && root->word <= word2)
+    if (root->word < word1)
+        range(root->right, word1, word2, v);
+    else if (root->word > word2)
+        range(root->left, word1, word2, v);
+    else
+    {
+        range(root->left, word1, word2, v);
         v.push_back(root->word);
-    range(root->right, word1, word2, v);
+        range(root->right, word1, word2, v);
+    }
 }
 
 void AVLTree::erase(Node *& root, const std::string & word)

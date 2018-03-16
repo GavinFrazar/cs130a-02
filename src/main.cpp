@@ -36,7 +36,6 @@ int main()
     {
         if (fs::is_regular_file(p))
         {
-            std::cout << p.path() << std::endl;
             std::ifstream input_file;
             input_file.open(p.path());
 
@@ -238,19 +237,22 @@ int main()
 
             //time avl_tree range
             auto start_avl_tree = std::chrono::high_resolution_clock::now();
-            auto avl_output = avl_tree.range(word1, word2);
+            const auto& avl_output = avl_tree.range(word1, word2);
             auto end_avl_tree = std::chrono::high_resolution_clock::now();
             auto dur_avl_tree = end_avl_tree - start_avl_tree;
             auto ns_avl_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_avl_tree).count();
             
             //time BTree range
             auto start_b_tree = std::chrono::high_resolution_clock::now();
-            auto btree_output = b_tree.range(word1, word2);
+            const auto& btree_output = b_tree.range(word1, word2);
             auto end_b_tree = std::chrono::high_resolution_clock::now();
             auto dur_b_tree = end_b_tree - start_b_tree;
             auto ns_b_tree = std::chrono::duration_cast<std::chrono::nanoseconds>(dur_b_tree).count();
 
-            for (auto word : avl_output)
+            for (auto& word : avl_output)
+                std::cout << word << '\n';
+
+            for (auto& word : btree_output)
                 std::cout << word << '\n';
 
             assert(avl_output.size() == btree_output.size());
