@@ -78,7 +78,8 @@ void BTree::split(BNode * unsplit_node)
 {
     int median = order_ / 2;
     BNode*& parent = unsplit_node->parent_;
-    std::string word = unsplit_node->data_[median]->word_;
+    auto& median_data = unsplit_node->data_[median];
+    const auto& word = unsplit_node->data_[median]->word_;
 
     //check if we are splitting the tree's root
     if (parent == nullptr)
@@ -87,10 +88,21 @@ void BTree::split(BNode * unsplit_node)
         this->root_ = parent;
     }
 
-    for (int i = 0; i < unsplit_node->data_[median]->count_; ++i)
-        insertHere(parent, word);
-    BNode* left_child = unsplit_node;
+    int i;
+    for (i = 0; i < parent->size_; ++i)
+        if (word <= parent->data_[i]->word_)
+            break;
+
+    BNode*& left_child = unsplit_node;
     BNode* right_child = new BNode(order_, true, parent);
+
+    shiftContentsRight(parent, i);
+    std::swap(parent->data_[i], median_data);
+    ++parent->size_;
+    --left_child->size_;
+
+    parent->children_[i] = left_child;
+    parent->children_[i + 1] = right_child;
 
     //copy elements to the right of the unsplit node's median into a new node
     for (int j = 0; j < median; ++j)
@@ -98,36 +110,24 @@ void BTree::split(BNode * unsplit_node)
         //copy pointers into right_child
         std::swap(right_child->data_[j], left_child->data_[j + median + 1]);
         std::swap(right_child->children_[j + 1], left_child->children_[j + median + 2]);
-        
+
         //update node sizes
-        right_child->size_ += 1;
-        left_child->size_ -= 1;
+        ++right_child->size_;
+        --left_child->size_;
     }
 
     //copy the last child from left_child to right_child
     std::swap(right_child->children_[0], left_child->children_[median + 1]);
 
-    //erase median pointer from left_child
-    delete left_child->data_[median];
     left_child->data_[median] = nullptr;
-    left_child->size_ -= 1;
 
     //set right_child's leaf status
     right_child->is_leaf_ = left_child->is_leaf_;
 
     //update all of right_child's children to recognize right_child as their parent (only if right_child is an internal node and actually has children)
     if (!right_child->is_leaf_)
-        for (int i = 0; i <= right_child->size_; ++i)
-            right_child->children_[i]->parent_ = right_child;
-
-    for (int i = 0; i < parent->size_; ++i)
-    {
-        if (parent->data_[i]->word_ == word)
-        {
-            parent->children_[i] = left_child;
-            parent->children_[i + 1] = right_child;
-        }
-    }
+        for (int j = 0; j <= right_child->size_; ++j)
+            right_child->children_[j]->parent_ = right_child;
 
     //check for parent overflow
     if (checkOverflow(parent->size_))
@@ -317,13 +317,12 @@ void BTree::shiftContentsRight(BNode * root, int start)
 {
     int size = root->size_;
     for (int i = size; i > start; --i)
-        root->data_[i] = root->data_[i-1];
-    
+        root->data_[i] = root->data_[i - 1];
+
     root->data_[start] = nullptr;
 
-    for (int i = size+1; i > start; --i)
-        root->children_[i] = root->children_[i-1];
-    root->children_[start] = nullptr;
+    for (int i = size + 1; i > start; --i)
+        root->children_[i] = root->children_[i - 1];
 }
 
 BNode* BTree::findMaxLeaf(BNode * root)
@@ -346,7 +345,7 @@ void BTree::freeMem(BNode *& root)
 {
     if (root == nullptr)
         return;
-    
+
     for (int i = 0; i <= root->size_; ++i)
         freeMem(root->children_[i]);
 
