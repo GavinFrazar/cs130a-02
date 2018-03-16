@@ -38,10 +38,9 @@ public:
             assert(count_children == 0);  //check that leaf node has no children
         
         if (!node->is_leaf_ && node != this->root_)
-            assert(count_data >= (order_-1)/2); //check for underflow in internal nodes
+            assert(checkUnderflow(node->size_) == false); //check for underflow in internal nodes
 
-        assert(count_data < this->order_); //check for overflowed node
-        assert(count_children < this->order_ + 1); //check for overflowed node
+        assert(checkOverflow(node->size_) == false); //check for overflowed node
     }
     void test()
     {

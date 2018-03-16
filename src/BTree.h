@@ -21,7 +21,6 @@ public:
 struct BNode
 {
 public:
-    static const std::size_t MINIMUM_SIZE_ = 1;
     std::size_t size_;
     bool is_leaf_;
     Data** data_;
@@ -54,6 +53,12 @@ protected:
     void range(BNode* root, const std::string& word1, const std::string& word2, std::vector<std::string>& v);
     void erase(BNode*& root, const std::string& word);
     void split(BNode* unsplit_node);
+    bool checkUnderflow(int size);
+    bool checkOverflow(int size);
+    void merge(BNode* root);
+    void rebalance(BNode* root);
+    void rotateWithLeftNeighbor(BNode* left_neighbor, Data* separator, BNode* deficient_node);
+    void rotateWithRightNeighbor(BNode* right_neighbor, Data* separator, BNode* deficient_node);
 public:
     //ctor
     BTree();
