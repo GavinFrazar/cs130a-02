@@ -174,25 +174,87 @@ void BTree::range(BNode * root, const std::string & word1, const std::string & w
 
 void BTree::erase(BNode *& root, const std::string & word)
 {
-    BNode* node = this->search(root, word);
-    if (node == nullptr) //not found -- nothing to delete
+    BNode* target_node = this->search(root, word);
+    if (target_node == nullptr) //not found -- nothing to delete
         return;
+    
+    int i = 0;
+    for (; i < root->size_; ++i)
+        if (root->data_[i]->word_ == word)
+            break;
 
-    if (node->is_leaf_)
+    Data*& target_data = target_node->data_[i];
+
+    if (target_data->count_ > 1)
     {
-        Data* data;
-        //find which data slot it's in
-        //check its count
-        if (data->count_ > 1)
+        --target_data->count_;
+        return;
+    }
+    else
+    {
+        delete target_data;
+        target_data = nullptr;
+    }
+
+    //internal node?
+
+    //underflow?
+
+    if (target_node->is_leaf_)
+    {
+        --target_node->size_;
+        for (int j = i + 1; j < target_node->size_; ++j)
+            target_node[j - 1] = target_node[j];
+
+        //check for underflow
+        if (target_node->size_ < BNode::MINIMUM_SIZE_)
         {
-            --data->count_;
-            return;
-        }
-        else
-        {
-            //delete it
-            //move the other data over (there's no children to move)
-            //check for underflow
+            BNode* parent = target_node->parent_;
+            //check for special case where the tree's root is a leaf and we are deleting from it, causing underflow
+            if (parent == nullptr)
+            {
+                delete this->root_;
+                this->root_ = nullptr;
+            }
+            else
+            {
+                int k;
+                for (k = parent->size_ - 1; k >= 0; --k)
+                    if (parent->data_[k]->word_ < word)
+                        break;
+
+                assert(parent->children_[k + 1] == root);
+
+                //check if left neighbor exists
+                if (k >= 0)
+                {
+                    //can I steal data from left neighbor?
+                    if (parent->children_[k]->size_ > BNode::MINIMUM_SIZE_)
+                    {
+                        //steal kth data member from parent
+                        //put largest data member from left neighbor into parent
+                    }
+                    else
+                    {
+                        //merge with left neighbor
+                    }
+                }
+
+                //check if right neighbor exists
+                if (k < parent->size_ - 1)
+                {
+                    //can I steal data from right neighbor?
+                    if (parent->children_[k + 2]->size_ > BNode::MINIMUM_SIZE_)
+                    {
+                        //steal (k+1)th data member from parent
+                        //put smallest data member from right neighbor into parent
+                    }
+                    else
+                    {
+                        //merge with right neighbor
+                    }
+                }
+            }
         }
     }
 }

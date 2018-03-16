@@ -21,7 +21,8 @@ public:
 struct BNode
 {
 public:
-    int size_;
+    static const std::size_t MINIMUM_SIZE_ = 1;
+    std::size_t size_;
     bool is_leaf_;
     Data** data_;
     BNode** children_;
