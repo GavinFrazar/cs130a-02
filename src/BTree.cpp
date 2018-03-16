@@ -36,7 +36,7 @@ void BTree::insert(BNode * root, const std::string & word)
         insertHere(root, word);
 
         //check for node overflow
-        if (root->size_ == order_)
+        if (checkOverflow(root->size_))
             split(root);
     }
     else
@@ -141,7 +141,7 @@ void BTree::split(BNode * unsplit_node)
     parent->children_[i + 1] = right_child;
 
     //check for parent overflow
-    if (parent->size_ == order_)
+    if (checkOverflow(parent->size_))
         split(parent);
 }
 
@@ -233,7 +233,7 @@ void BTree::rebalance(BNode * root)
     {
         if (!checkUnderflow(parent->children_[i - 1]->size_ - 1))
         {
-            rotateWithLeftNeighbor(parent->children_[i - 1], parent->data_[i], root);
+            rotateWithLeftNeighbor(root);
             return;
         }
     }
@@ -243,7 +243,7 @@ void BTree::rebalance(BNode * root)
     {
         if (!checkUnderflow(parent->children_[i + 1]->size_ - 1))
         {
-            rotateWithRightNeighbor(parent->children_[i + 1], parent->data_[i], root);
+            rotateWithRightNeighbor(root);
             return;
         }
     }
@@ -252,61 +252,101 @@ void BTree::rebalance(BNode * root)
     merge(root);
 }
 
-void BTree::rotateWithLeftNeighbor(BNode * left_neighbor, Data * separator, BNode * deficient_node)
+void BTree::rotateWithLeftNeighbor(BNode * deficient_node)
 {
     BNode* parent = deficient_node->parent_;
-    for (int i = 0; i < parent->size_; ++i)
-    {
-        if (parent->data_[i] == separator)
+    Data* separator;
+    BNode* left_neighbor;
+    int i;
+    for (i = 1; i <= parent->size_; ++i)
+        if (parent->children_[i] = deficient_node)
         {
-            assert(parent->children_[i] == left_neighbor); //DEBUGASSERT
-            parent->data_[i] = nullptr;
-            std::swap(parent->data_[i], left_neighbor->data_[left_neighbor->size_ - 1]);
+            separator = parent->data_[i - 1];
+            left_neighbor = parent->children_[i - 1];
+            break;
         }
-    }
 
-    for (int i = 1; i < order_; ++i)
-        deficient_node->data_[i] = deficient_node->data_[i - 1];
+    parent->data_[i - 1] = nullptr;
+    std::swap(parent->data_[i - 1], left_neighbor->data_[left_neighbor->size_ - 1]);
 
-    for (int i = 1; i <= order_; ++i)
-        deficient_node->children_[i] = deficient_node->children_[i - 1];
-
+    shiftContentsRight(deficient_node, 0);
     deficient_node->data_[0] = separator;
     deficient_node->children_[0] = nullptr;
     std::swap(deficient_node->children_[0], left_neighbor->children_[left_neighbor->size_]);
-    assert(left_neighbor->children_[left_neighbor->size_] == nullptr); //DEBUGASSERT
-    deficient_node->children_[0]->parent_ = deficient_node;
+    if (deficient_node->children_[0] != nullptr)
+        deficient_node->children_[0]->parent_ = deficient_node;
 
     --left_neighbor->size_;
     ++deficient_node->size_;
 }
 
-void BTree::rotateWithRightNeighbor(BNode * right_neighbor, Data * separator, BNode * deficient_node)
+void BTree::rotateWithRightNeighbor(BNode * deficient_node)
 {
     BNode* parent = deficient_node->parent_;
-    for (int i = 0; i < parent->size_; ++i)
+    BNode* right_neighbor;
+    Data* separator;
+    int i;
+    for (i = 0; i < parent->size_; ++i)
     {
-        if (parent->data_[i] == separator)
+        if (parent->children_[i] == deficient_node)
         {
-            assert(parent->children_[i + 1] == right_neighbor); //DEBUGASSERT
-            parent->data_[i] = nullptr;
-            std::swap(parent->data_[i], right_neighbor->data_[0]);
+            right_neighbor = parent->children_[i + 1];
+            separator = parent->data_[i];
         }
     }
-
+    
+    parent->data_[i] = nullptr;
+    std::swap(parent->data_[i], right_neighbor->data_[0]);
+    
     int k = deficient_node->size_;
     deficient_node->data_[k] = separator;
     deficient_node->children_[k + 1] = right_neighbor->children_[0];
-    deficient_node->children_[k + 1]->parent_ = deficient_node;
+    if (deficient_node->children_[k + 1] != nullptr)
+        deficient_node->children_[k + 1]->parent_ = deficient_node;
 
-    for (int i = 1; i < right_neighbor->size_; ++i)
-        right_neighbor->data_[i - 1] = right_neighbor->data_[i];
-
-    for (int i = 1; i <= right_neighbor->size_; ++i)
-        right_neighbor->children_[i - 1] = right_neighbor->children_[i];
-
+    shiftContentsLeft(right_neighbor, 0);
     --right_neighbor->size_;
     ++deficient_node->size_;
+}
+
+void BTree::shiftContentsLeft(BNode * root, int start)
+{
+    int size = root->size_;
+    for (int i = start; i < size - 1; ++i)
+        root->data_[i] = root->data_[i + 1];
+    root->data_[size - 1] = nullptr;
+
+    for (int i = start; i <= size - 1; ++i)
+        root->children_[i] = root->children_[i + 1];
+    root->children_[size] = nullptr;
+}
+
+void BTree::shiftContentsRight(BNode * root, int start)
+{
+    int size = root->size_;
+    for (int i = start; i < size - 1; ++i)
+        root->data_[i + 1] = root->data_[i];
+    root->data_[start] = nullptr;
+
+    for (int i = start; i <= size - 1; ++i)
+        root->children_[i + 1] = root->children_[i];
+    root->children_[start] = nullptr;
+}
+
+BNode* BTree::findMaxLeaf(BNode * root)
+{
+    if (root->is_leaf_)
+        return root;
+    else
+        return findMaxLeaf(root->children_[root->size_]);
+}
+
+BNode* BTree::findMinLeaf(BNode * root)
+{
+    if (root->is_leaf_)
+        return root;
+    else
+        return findMinLeaf(root->children_[0]);
 }
 
 void BTree::sort(BNode * root, std::vector<std::string>& v)
@@ -336,44 +376,6 @@ void BTree::range(BNode * root, const std::string & word1, const std::string & w
         range(root->children_[root->size_], word1, word2, v); //get the last child's data
 }
 
-void BTree::erase(BNode *& root, const std::string & word)
-{
-    BNode* target_node = this->search(root, word);
-    if (target_node == nullptr) //not found -- nothing to delete
-        return;
-
-    int i = 0;
-    for (; i < root->size_; ++i)
-        if (root->data_[i]->word_ == word)
-            break;
-
-    Data*& target_data = target_node->data_[i];
-
-    if (target_data->count_ > 1)
-    {
-        --target_data->count_;
-        return;
-    }
-
-    //TODO -- delete the target and move things over
-    if (root->is_leaf_)
-    {
-        delete target_data;
-        for (int j = i; j < target_node->size_ - 1; ++j)
-            target_node->data_[j] = target_node->data_[j + 1];
-        target_node->data_[target_node->size_ - 1] = nullptr;
-    }
-    else
-    {
-        //TODO -- internal node deletion
-    }
-    --target_node->size_;
-
-    //check for underflow
-    if (checkUnderflow(target_node->size_))
-        rebalance(target_node);
-}
-
 BTree::BTree()
 {
     this->root_ = nullptr;
@@ -396,7 +398,46 @@ void BTree::insert(const std::string & word)
 
 void BTree::erase(const std::string & word)
 {
-    this->erase(this->root_, word);
+    BNode* target_node = this->search(this->root_, word);
+    if (target_node == nullptr) //not found -- nothing to delete
+        return;
+
+    int i = 0;
+    for (; i < target_node->size_; ++i)
+        if (target_node->data_[i]->word_ == word)
+            break;
+
+    Data*& target_data = target_node->data_[i];
+    if (target_data == nullptr)
+        return;
+    if (target_data->count_ > 1)
+    {
+        --target_data->count_;
+        return;
+    }
+
+    delete target_data;
+    target_data = nullptr;
+    if (target_node->is_leaf_)
+    {
+        shiftContentsLeft(target_node, i);
+        --target_node->size_;
+
+        //check for underflow
+        if (checkUnderflow(target_node->size_))
+            rebalance(target_node);
+    }
+    else
+    {
+        //TODO -- internal node deletion
+        BNode* max_leaf = findMaxLeaf(target_node->children_[i]);
+        std::swap(target_data, max_leaf->data_[max_leaf->size_ - 1]);
+        --max_leaf->size_;
+
+        if (checkUnderflow(max_leaf->size_))
+            rebalance(max_leaf);
+    }
+
 }
 
 std::vector<std::string> BTree::sort()

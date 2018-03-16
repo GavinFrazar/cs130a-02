@@ -51,14 +51,18 @@ protected:
     void insertHere(BNode* root, const std::string& word);
     void sort(BNode* root, std::vector<std::string>& v);
     void range(BNode* root, const std::string& word1, const std::string& word2, std::vector<std::string>& v);
-    void erase(BNode*& root, const std::string& word);
+    
     void split(BNode* unsplit_node);
     bool checkUnderflow(int size);
     bool checkOverflow(int size);
     void merge(BNode* root);
     void rebalance(BNode* root);
-    void rotateWithLeftNeighbor(BNode* left_neighbor, Data* separator, BNode* deficient_node);
-    void rotateWithRightNeighbor(BNode* right_neighbor, Data* separator, BNode* deficient_node);
+    void rotateWithLeftNeighbor(BNode* deficient_node);
+    void rotateWithRightNeighbor(BNode* deficient_node);
+    void shiftContentsLeft(BNode* root, int start);
+    void shiftContentsRight(BNode* root, int start);
+    BNode* findMaxLeaf(BNode* root);
+    BNode* findMinLeaf(BNode* root);
 public:
     //ctor
     BTree();
