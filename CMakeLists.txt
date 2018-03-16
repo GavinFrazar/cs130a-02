@@ -41,7 +41,7 @@ if (UNIX)
 endif(UNIX)
 
 # Unit/Integration tests
-enable_testing(true)
+enable_testing(false)
 
 # Tests insert method
  add_executable(TestAVLinsert tests/TestAVLinsert.cpp src/AVLTree.cpp)
