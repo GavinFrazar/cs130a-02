@@ -35,15 +35,6 @@ public:
         is_leaf_ = is_leaf;
         size_ = 0;
     }
-
-    ~BNode()
-    {
-        for (int i = 0; i < size_; ++i)
-            delete data_[i];
-
-        delete[] data_;
-        delete[] children_;
-    }
 };
 
 class BTree
@@ -55,7 +46,7 @@ protected:
     unsigned int order_; //degree of the tree
 
     //helpers
-    BNode*& search(BNode*& root, const std::string& word);
+    BNode* search(BNode* root, const std::string& word);
     void insert(BNode* root, const std::string& word);
     void insertHere(BNode* root, const std::string& word);
     void sort(BNode* root, std::vector<std::string>& v);
@@ -68,8 +59,8 @@ protected:
     void rebalance(BNode* root);
     void rotateWithLeftNeighbor(BNode* deficient_node);
     void rotateWithRightNeighbor(BNode* deficient_node);
-    void shiftContentsLeft(BNode* root, int start);
-    void shiftContentsRight(BNode* root, int start);
+    void shiftContentsLeft(BNode* root, int data_start, int child_start);
+    void shiftContentsRight(BNode* root, int data_start, int child_start);
     BNode* findMaxLeaf(BNode* root);
     BNode* findMinLeaf(BNode* root);
     void freeMem(BNode*& root);
