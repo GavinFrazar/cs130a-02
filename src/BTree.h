@@ -35,6 +35,11 @@ public:
         is_leaf_ = is_leaf;
         size_ = 0;
     }
+    ~BNode()
+    {
+        delete[] children_;
+        delete[] data_;
+    }
 };
 
 class BTree

@@ -389,11 +389,9 @@ void BTree::freeMem(BNode *& root)
 
     for (int i = 0; i < root->size_; ++i)
         delete root->data_[i];
-    delete[] root->data_;
 
     for (int i = 0; i <= root->size_; ++i)
         freeMem(root->children_[i]);
-    delete[] root->children_;
 
     delete root;
     root = nullptr;
